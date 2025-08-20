@@ -10,7 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MenuViewController : UIViewController
-
+@property(nonatomic, strong) UIButton* adderButton;
+@property(nonatomic, strong) UIButton* imageBrowserButton;
 @end
 
 NS_ASSUME_NONNULL_END

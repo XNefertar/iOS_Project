@@ -9,14 +9,6 @@
 #import "ViewController.h"
 
 @interface CalculatorViewController ()
-// Frame常量属性
-@property(nonatomic, assign) CGFloat startY;
-@property(nonatomic, assign) CGFloat horizonPadding;
-@property(nonatomic, assign) CGFloat spacing;
-@property(nonatomic, assign) CGFloat textFieldHeight;
-@property(nonatomic, assign) CGFloat textFieldWidth;
-@property(nonatomic, assign) CGFloat operatorLabelWidth;
-
 // 计算器类
 @property (nonatomic, strong) Calculator* adder;
 
@@ -40,19 +32,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
-    [self setupLabelText];
-    [self setupTextFieldProperty];
-    [self setupButtonProperty];
-    [self setupControlSubview];
+    [self setupProperties];
+    [self addAllSubviews];
+    [self setupConstranints];
 }
 
-- (void) viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    [self setupLayoutConstants];
-    [self setupControlFrame];
-    [self setupButtonFrame];
-}
 
 #pragma mark - Lazy Load
 - (Calculator*)adder {
@@ -97,27 +81,82 @@
     return _number1Field;
 }
 
-#pragma mark - Set Label Text
-- (void)setupLabelText {
+#pragma mark Setup
+- (void)setupProperties {
     self.plusLabel.text = @"+";
     self.equalLabel.text = @"=";
     self.resultLabel.text = @"0";
-}
-
-#pragma mark - Set TextField Property
-- (void)setupTextFieldProperty {
+    
     self.number1Field.placeholder = @"0";
     self.number2Field.placeholder = @"0";
     
     self.number1Field.borderStyle = UITextBorderStyleRoundedRect;
     self.number2Field.borderStyle = UITextBorderStyleRoundedRect;
-}
-
-#pragma mark - Set Button Property
-- (void)setupButtonProperty {
+    
     self.calculateButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.calculateButton setTitle:@"Calculate" forState:UIControlStateNormal];
     [self.calculateButton addTarget:self action:@selector(notifyAndRenewResult) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)addAllSubviews {
+    self.number1Field.translatesAutoresizingMaskIntoConstraints = NO;
+    self.plusLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.number2Field.translatesAutoresizingMaskIntoConstraints = NO;
+    self.equalLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.resultLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.calculateButton.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.view addSubview:self.number1Field];
+    [self.view addSubview:self.number2Field];
+    [self.view addSubview:self.plusLabel];
+    [self.view addSubview:self.equalLabel];
+    [self.view addSubview:self.resultLabel];
+    [self.view addSubview:self.calculateButton];
+}
+
+- (void)setupConstranints {
+    UILayoutGuide* safeArea = self.view.safeAreaLayoutGuide;
+    
+    CGFloat topPadding = 120.0;
+    CGFloat spacing = 12.0;
+    CGFloat textFieldHeight = 40.0;
+    CGFloat textFieldWidth = 80.0;
+    CGFloat operatorLabelWidth = 25.0;
+    
+    // 1. number1Field
+    [self.number1Field.leadingAnchor constraintEqualToAnchor:safeArea.leadingAnchor constant:20.0].active = YES;
+    [self.number1Field.topAnchor constraintEqualToAnchor:safeArea.topAnchor constant:topPadding].active = YES;
+    [self.number1Field.widthAnchor constraintEqualToConstant:textFieldWidth].active = YES;
+    [self.number1Field.heightAnchor constraintEqualToConstant:textFieldHeight].active = YES;
+    
+    // 2. plusLabel
+    [self.plusLabel.leadingAnchor constraintEqualToAnchor:self.number1Field.trailingAnchor constant:spacing].active = YES;
+    [self.plusLabel.centerYAnchor constraintEqualToAnchor:self.number1Field.centerYAnchor].active = YES;
+    [self.plusLabel.widthAnchor constraintEqualToConstant:operatorLabelWidth].active = YES;
+    
+    // 3. number2Field
+    [self.number2Field.leadingAnchor constraintEqualToAnchor:self.plusLabel.trailingAnchor constant:spacing].active = YES;
+    [self.number2Field.centerYAnchor constraintEqualToAnchor:self.number1Field.centerYAnchor].active = YES;
+    [self.number2Field.widthAnchor constraintEqualToConstant:textFieldWidth].active = YES;
+    [self.number2Field.heightAnchor constraintEqualToConstant:textFieldHeight].active = YES;
+    
+    // 4. equalLabel
+    [self.equalLabel.leadingAnchor constraintEqualToAnchor:self.number2Field.trailingAnchor constant:spacing].active = YES;
+    [self.equalLabel.centerYAnchor constraintEqualToAnchor:self.number1Field.centerYAnchor].active = YES;
+    [self.equalLabel.widthAnchor constraintEqualToConstant:operatorLabelWidth].active = YES;
+    
+    // 5. resultLabel
+    [self.resultLabel.leadingAnchor constraintEqualToAnchor:self.equalLabel.trailingAnchor constant:spacing].active = YES;
+    [self.resultLabel.centerYAnchor constraintEqualToAnchor:self.number1Field.centerYAnchor].active = YES;
+    // 让 resultLabel 的右边不要超出屏幕
+    [self.resultLabel.trailingAnchor constraintLessThanOrEqualToAnchor:safeArea.trailingAnchor constant:-20.0].active = YES;
+    
+    // --- Calculate Button 约束 ---
+    [self.calculateButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+    [self.calculateButton.topAnchor constraintEqualToAnchor:self.number1Field.bottomAnchor constant:20.0].active = YES;
+    [self.calculateButton.widthAnchor constraintEqualToConstant:200.0].active = YES;
+    [self.calculateButton.heightAnchor constraintEqualToConstant:45.0].active = YES;
+    
 }
 
 #pragma mark - Button Action
@@ -127,56 +166,36 @@
     self.resultLabel.text = [NSString stringWithFormat:@"%ld", res];
 }
 
-#pragma mark - Add Control Subview
-- (void)setupControlSubview {
-    [self.view addSubview:self.number1Field];
-    [self.view addSubview:self.number2Field];
-    [self.view addSubview:self.plusLabel];
-    [self.view addSubview:self.equalLabel];
-    [self.view addSubview:self.resultLabel];
-    [self.view addSubview:self.calculateButton];
-}
+//#pragma mark - Set Control Frame
+//- (void)setupControlFrame {
+//    // 设置frame
+//    self.number1Field.frame = CGRectMake(self.horizonPadding, self.startY, self.textFieldWidth, self.textFieldHeight);
+//    
+//    // + 标签起始坐标 = 第一个输入框的右边界 + 控件间距
+//    CGFloat plusLabelX = CGRectGetMaxX(self.number1Field.frame) + self.spacing;
+//    self.plusLabel.frame = CGRectMake(plusLabelX, self.startY, self.operatorLabelWidth, self.textFieldHeight);
+//    
+//    CGFloat number2FieldX = CGRectGetMaxX(self.plusLabel.frame) + self.spacing;
+//    self.number2Field.frame = CGRectMake(number2FieldX, self.startY, self.textFieldWidth, self.textFieldHeight);
+//    
+//    CGFloat equalLabelX = CGRectGetMaxX(self.number2Field.frame) + self.spacing;
+//    self.equalLabel.frame = CGRectMake(equalLabelX, self.startY, self.operatorLabelWidth, self.textFieldHeight);
+//    
+//    CGFloat resultLabelX = CGRectGetMaxX(self.equalLabel.frame) + self.spacing;
+//    self.resultLabel.frame = CGRectMake(resultLabelX, self.startY, self.textFieldWidth, self.textFieldHeight);
+//}
 
-#pragma mark - Set Layout Constants
-- (void)setupLayoutConstants {
-    self.startY = self.view.safeAreaInsets.top + 120.0;
-    self.horizonPadding = 20.0;
-    self.spacing = 15.0;
-    self.textFieldHeight = 40.0;
-    self.textFieldWidth = 80.0;
-    self.operatorLabelWidth = 30.0;
-}
-
-#pragma mark - Set Control Frame
-- (void)setupControlFrame {
-    // 设置frame
-    self.number1Field.frame = CGRectMake(self.horizonPadding, self.startY, self.textFieldWidth, self.textFieldHeight);
-    
-    // + 标签起始坐标 = 第一个输入框的右边界 + 控件间距
-    CGFloat plusLabelX = CGRectGetMaxX(self.number1Field.frame) + self.spacing;
-    self.plusLabel.frame = CGRectMake(plusLabelX, self.startY, self.operatorLabelWidth, self.textFieldHeight);
-    
-    CGFloat number2FieldX = CGRectGetMaxX(self.plusLabel.frame) + self.spacing;
-    self.number2Field.frame = CGRectMake(number2FieldX, self.startY, self.textFieldWidth, self.textFieldHeight);
-    
-    CGFloat equalLabelX = CGRectGetMaxX(self.number2Field.frame) + self.spacing;
-    self.equalLabel.frame = CGRectMake(equalLabelX, self.startY, self.operatorLabelWidth, self.textFieldHeight);
-    
-    CGFloat resultLabelX = CGRectGetMaxX(self.equalLabel.frame) + self.spacing;
-    self.resultLabel.frame = CGRectMake(resultLabelX, self.startY, self.textFieldWidth, self.textFieldHeight);
-}
-
-#pragma mark - Set Button Frame
-- (void)setupButtonFrame {
-    // 按钮的居中布局
-    CGFloat buttonWidth = 200.0;
-    CGFloat buttonHeight = 45.0;
-    
-    // 居中的X坐标
-    // (屏幕宽度 - 按钮宽度) / 2
-    CGFloat buttonX = (self.view.bounds.size.width - buttonWidth) / 2;
-    CGFloat buttonY = CGRectGetMaxY(self.number1Field.frame) + 20.0;
-    self.calculateButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
-}
+//#pragma mark - Set Button Frame
+//- (void)setupButtonFrame {
+//    // 按钮的居中布局
+//    CGFloat buttonWidth = 200.0;
+//    CGFloat buttonHeight = 45.0;
+//    
+//    // 居中的X坐标
+//    // (屏幕宽度 - 按钮宽度) / 2
+//    CGFloat buttonX = (self.view.bounds.size.width - buttonWidth) / 2;
+//    CGFloat buttonY = CGRectGetMaxY(self.number1Field.frame) + 20.0;
+//    self.calculateButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
+//}
 
 @end

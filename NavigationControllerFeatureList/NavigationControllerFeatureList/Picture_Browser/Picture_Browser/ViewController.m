@@ -10,15 +10,6 @@
 
 @interface PictureBrowserViewController ()
 
-// Layout Constants
-@property(nonatomic, assign) CGFloat startY;
-@property(nonatomic, assign) CGFloat horizonPadding;
-@property(nonatomic, assign) CGFloat spacing;
-@property(nonatomic, assign) CGFloat buttonWidth;
-@property(nonatomic, assign) CGFloat buttonHeight;
-@property(nonatomic, assign) CGFloat textFieldWidth;
-@property(nonatomic, assign) CGFloat textFieldHeight;
-
 @property(nonatomic, strong) NSArray* pictureModels;
 @property(nonatomic, strong) UILabel* descriptionField;
 @property(nonatomic, assign) NSInteger currentIndex;
@@ -29,6 +20,16 @@
 @end
 
 @implementation PictureBrowserViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self loadData];
+    [self setupInitialState];
+    [self addAllSubviews];
+    [self setupConstraints];
+}
 
 #pragma mark - Lazy Load
 - (NSArray*)pictureModels {
@@ -47,7 +48,9 @@
 
 - (UIImageView*)imageView {
     if (_imageView == nil) {
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 200, 200, 200)];
+        _imageView = [[UIImageView alloc] init];
+        _imageView.contentMode = UIViewContentModeScaleAspectFit;
+        _imageView.clipsToBounds = YES;
     }
     return _imageView;
 }
@@ -66,26 +69,75 @@
     return _nextButton;
 }
 
-#pragma mark - Set Layout Constants
-- (void)setupLayoutConstants {
-    self.startY = self.view.safeAreaInsets.top + 400;
-    self.horizonPadding = 20.0;
-    self.spacing = 20.0;
+#pragma mark - Setup
+- (void)setupInitialState {
+    self.currentIndex = 0;
+    [self updatePictureModel];
     
-    self.buttonWidth = 25.0;
-    self.buttonHeight = 25.0;
+    UIImage* preivousIcon = [UIImage imageNamed:@"left_highlighted"];
+    [self.previousButton setImage:preivousIcon forState:UIControlStateNormal];
+    [self.previousButton addTarget:self action:@selector(switchPreviousPicture) forControlEvents:UIControlEventTouchUpInside];
     
-    self.textFieldWidth = 100;
-    self.textFieldHeight = 100.0;
+    UIImage* nextIcon = [UIImage imageNamed:@"right_highlighted"];
+    [self.nextButton setImage:nextIcon forState:UIControlStateNormal];
+    [self.nextButton addTarget:self action:@selector(switchNextPicture) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self updateVisibility];
 }
 
-
-#pragma mark - Add Control Subview
-- (void)addControlSubview {
+- (void)addAllSubviews {
+    self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.descriptionField.translatesAutoresizingMaskIntoConstraints = NO;
+    self.previousButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.nextButton.translatesAutoresizingMaskIntoConstraints = NO;
+    
     [self.view addSubview:self.previousButton];
     [self.view addSubview:self.nextButton];
     [self.view addSubview:self.imageView];
     [self.view addSubview:self.descriptionField];
+}
+
+- (void)setupConstraints {
+    UILayoutGuide *safeArea = self.view.safeAreaLayoutGuide;
+        
+    [self.imageView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+    [self.imageView.topAnchor constraintEqualToAnchor:safeArea.topAnchor constant:20.0].active = YES;
+    [self.imageView.widthAnchor constraintEqualToAnchor:self.view.widthAnchor multiplier:0.8].active = YES;
+    
+    [self.imageView.heightAnchor constraintLessThanOrEqualToAnchor:self.imageView.widthAnchor].active = YES;
+    [self.imageView.heightAnchor constraintLessThanOrEqualToAnchor:safeArea.heightAnchor multiplier:0.65].active = YES;
+    
+//    [self.descriptionField.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+//    [self.descriptionField.topAnchor constraintEqualToAnchor:self.imageView.bottomAnchor constant:20.0].active = YES;
+//    [self.descriptionField.topAnchor constraintGreaterThanOrEqualToAnchor:self.imageView.bottomAnchor constant:20.0].active = YES;
+//    [self.descriptionField.bottomAnchor constraintEqualToAnchor:self.previousButton.topAnchor constant:-30.0].active = YES;
+//    [self.descriptionField.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+    
+    UILayoutGuide* verticalSpaceGuide = [[UILayoutGuide alloc] init];
+    [self.view addLayoutGuide:verticalSpaceGuide];
+    
+    [verticalSpaceGuide.topAnchor constraintEqualToAnchor:self.imageView.bottomAnchor].active = YES;
+    [verticalSpaceGuide.bottomAnchor constraintEqualToAnchor:self.previousButton.topAnchor].active = YES;
+    [verticalSpaceGuide.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+    
+    [self.descriptionField.centerYAnchor constraintEqualToAnchor:verticalSpaceGuide.centerYAnchor].active = YES;
+    [self.descriptionField.centerXAnchor constraintEqualToAnchor:verticalSpaceGuide.centerXAnchor].active = YES;
+    [self.descriptionField.topAnchor constraintGreaterThanOrEqualToAnchor:verticalSpaceGuide.topAnchor constant:5.0].active = YES;
+    [self.descriptionField.bottomAnchor constraintLessThanOrEqualToAnchor:verticalSpaceGuide.bottomAnchor constant:-5.0].active = YES;
+    
+    [self.previousButton.bottomAnchor constraintEqualToAnchor:safeArea.bottomAnchor constant:-20.0].active = YES;
+    
+    CGFloat buttonSize = 44.0;
+    [self.previousButton.widthAnchor constraintEqualToConstant:buttonSize].active = YES;
+    [self.previousButton.heightAnchor constraintEqualToConstant:buttonSize].active = YES;
+    [self.nextButton.widthAnchor constraintEqualToConstant:buttonSize].active = YES;
+    [self.nextButton.heightAnchor constraintEqualToConstant:buttonSize].active = YES;
+    
+    CGFloat buttonSpacing = 100.0;
+    [self.nextButton.leadingAnchor constraintEqualToAnchor:self.previousButton.trailingAnchor constant:buttonSpacing].active = YES;
+    [self.nextButton.centerYAnchor constraintEqualToAnchor:self.previousButton.centerYAnchor].active = YES;
+    [self.previousButton.trailingAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:-(buttonSpacing / 2)].active = YES;
+    
 }
 
 
@@ -122,51 +174,6 @@
     self.currentIndex += 1;
     [self updateVisibility];
     [self updatePictureModel];
-}
-
-#pragma mark - Initialize Button
-- (void)setupButtonInitalState {
-    UIImage* preivousIcon = [UIImage imageNamed:@"left_highlighted"];
-    [self.previousButton setImage:preivousIcon forState:UIControlStateNormal];
-    [self.previousButton addTarget:self action:@selector(switchPreviousPicture) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.nextButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    UIImage* nextIcon = [UIImage imageNamed:@"right_highlighted"];
-    [self.nextButton setImage:nextIcon forState:UIControlStateNormal];
-    [self.nextButton addTarget:self action:@selector(switchNextPicture) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self updateVisibility];
-}
-
-#pragma mark - Initialize Display Page
-- (void)setupDefaultDisplayPage {
-    self.currentIndex = 0;
-    self.imageView.image = ((PictureModel*)self.pictureModels[self.currentIndex]).image;
-    self.descriptionField.text = ((PictureModel*)self.pictureModels[self.currentIndex]).descriptionText;
-}
-
-
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [self loadData];
-    [self setupLayoutConstants];
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self setupDefaultDisplayPage];
-    [self setupButtonInitalState];
-    [self addControlSubview];
-}
-
-- (void)viewDidLayoutSubviews{
-    [super viewDidLayoutSubviews];
-    
-    CGFloat textFieldX = (self.view.bounds.size.width - self.textFieldWidth) / 2;
-    self.descriptionField.frame = CGRectMake(textFieldX, self.startY, self.textFieldWidth, self.textFieldHeight);
-    
-    self.previousButton.frame = CGRectMake(self.horizonPadding, self.startY, self.buttonWidth, self.buttonHeight);
-    CGFloat pictureMaxX = CGRectGetMaxX(self.imageView.frame);
-    self.nextButton.frame = CGRectMake(pictureMaxX + self.spacing, self.startY, self.buttonWidth, self.buttonHeight);
 }
 
 @end

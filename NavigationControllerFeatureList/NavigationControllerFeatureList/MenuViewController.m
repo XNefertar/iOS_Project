@@ -8,6 +8,7 @@
 #import "MenuViewController.h"
 #import "Calcultor_Adder_Frame/Calcultor_Adder_Frame/ViewController.h"
 #import "Picture_Browser/Picture_Browser/ViewController.h"
+#import "Image_Carousel/Image_Carousel/ViewController.h"
 
 @interface MenuViewController ()
 
@@ -44,25 +45,39 @@
     return _imageBrowserButton;
 }
 
+- (UIButton*)imageCarouselButton {
+    if (_imageCarouselButton == nil) {
+        _imageCarouselButton = [self createMenuButtonWithTitle:@"图片轮播器" action:@selector(openImageCarousel)];
+    }
+    return _imageCarouselButton;
+}
+
 #pragma mark - Add Subviews
 - (void)addControlSubviews {
     [self.view addSubview:self.adderButton];
     [self.view addSubview:self.imageBrowserButton];
+    [self.view addSubview:self.imageCarouselButton];
 }
 
 #pragma mark - Auto Layout Constraints
 - (void)setupAutoLaytouConstraints {
-    // adder Button Constraints
+    // Adder Button Constraints
     [self.adderButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
     [self.adderButton.bottomAnchor constraintEqualToAnchor:self.view.centerYAnchor constant:-10].active = YES;
     [self.adderButton.widthAnchor constraintEqualToConstant:220].active = YES;
     [self.adderButton.heightAnchor constraintEqualToConstant:50].active = YES;
     
-    // image Browser Button Constraints
+    // Image Browser Button Constraints
     [self.imageBrowserButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
-    [self.imageBrowserButton.topAnchor constraintEqualToAnchor:self.view.centerYAnchor constant:10].active = YES;
+    [self.imageBrowserButton.topAnchor constraintEqualToAnchor:self.adderButton.bottomAnchor constant:20].active = YES;
     [self.imageBrowserButton.widthAnchor constraintEqualToConstant:220].active = YES;
     [self.imageBrowserButton.heightAnchor constraintEqualToConstant:50].active = YES;
+    
+    // Image Carousel Button
+    [self.imageCarouselButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+    [self.imageCarouselButton.topAnchor constraintEqualToAnchor:self.imageBrowserButton.bottomAnchor constant:20].active = YES;
+    [self.imageCarouselButton.widthAnchor constraintEqualToConstant:220].active = YES;
+    [self.imageCarouselButton.heightAnchor constraintEqualToConstant:50].active = YES;
 }
 
 
@@ -77,6 +92,10 @@
     [self.navigationController pushViewController:pictureBrowserVC animated:YES];
 }
 
+- (void)openImageCarousel {
+    ImageCarouselViewController* imageCarouselVC = [[ImageCarouselViewController alloc] init];
+    [self.navigationController pushViewController:imageCarouselVC animated:YES];
+}
 
 #pragma mark - Create Menu Method
 - (UIButton*) createMenuButtonWithTitle:(NSString*) title action:(SEL)action {
@@ -89,7 +108,5 @@
     
     return button;
 }
-
-
 
 @end

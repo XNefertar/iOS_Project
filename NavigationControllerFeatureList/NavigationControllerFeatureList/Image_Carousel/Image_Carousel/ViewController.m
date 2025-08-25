@@ -14,6 +14,7 @@
 
 @interface ImageCarouselViewController () <UIScrollViewDelegate>
 @property(nonatomic, strong) UIScrollView* scrollView;
+@property(nonatomic, strong) UIPageControl* pageControl;
 @property(nonatomic, strong) NSArray<UIImage*>* images;
 @end
 
@@ -25,6 +26,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self loadData];
     [self setupScrollView];
+    [self setupPageControl];
 }
 
 
@@ -50,7 +52,7 @@
     self.scrollView.showsHorizontalScrollIndicator = NO;
     
     CGFloat contentWidth = SCREEN_WIDTH * IMAGE_COUNT;
-    self.scrollView.contentSize = CGSizeMake(contentWidth, 0);
+    self.scrollView.contentSize = CGSizeMake(contentWidth, SCROLL_VIEW_H - 1);
     
     for (int i = 0; i < IMAGE_COUNT; ++i) {
         UIImageView* imageView = [[UIImageView alloc] initWithImage:self.images[i]];
@@ -63,5 +65,25 @@
     [self.view addSubview:self.scrollView];
 }
 
+- (void)setupPageControl {
+    self.pageControl = [[UIPageControl alloc] init];
+    self.pageControl.numberOfPages = self.images.count;
+    self.pageControl.currentPage = 0;
+    self.pageControl.userInteractionEnabled = NO;
+    
+    [self.pageControl sizeToFit];
+    self.pageControl.center = CGPointMake(SCREEN_WIDTH / 2, SCROLL_VIEW_H + SCROLL_VIEW_Y + 10);
+    self.pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
+    self.pageControl.currentPageIndicatorTintColor = [UIColor blackColor];
+    
+    [self.view addSubview:self.pageControl];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    CGFloat offsetX = scrollView.contentOffset.x;
+    CGFloat pageWidth = scrollView.frame.size.width;
+    int currentPage = round(offsetX / pageWidth);
+    self.pageControl.currentPage = currentPage;
+}
 
 @end

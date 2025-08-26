@@ -54,8 +54,6 @@
                                                    block:^(NSTimer * _Nonnull timer) {
         [weakSelf scrollToNextPage];
     }];
-    
-    
 }
 
 - (void)stopTimer {
@@ -66,7 +64,6 @@
     } else {
         NSLog(@"定时器未运行...");
     }
-    
 }
 
 
@@ -91,21 +88,9 @@
     self.scrollView.showsVerticalScrollIndicator = NO;
     self.scrollView.showsHorizontalScrollIndicator = NO;
     
-//    CGFloat contentWidth = SCREEN_WIDTH * IMAGE_COUNT;
-//    self.scrollView.contentSize = CGSizeMake(contentWidth, SCROLL_VIEW_H - 1);
     self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH * 3, SCROLL_VIEW_H - 1);
     [self.scrollView setContentOffset:CGPointMake(SCREEN_WIDTH, 0) animated:NO];
     [self.view addSubview:self.scrollView];
-    
-//    for (int i = 0; i < IMAGE_COUNT; ++i) {
-//        UIImageView* imageView = [[UIImageView alloc] initWithImage:self.images[i]];
-//        CGFloat imageX = i * SCREEN_WIDTH;
-//        imageView.frame = CGRectMake(imageX, 0, SCREEN_WIDTH, SCROLL_VIEW_H);
-//        
-//        imageView.contentMode = UIViewContentModeScaleAspectFit;
-//        [self.scrollView addSubview:imageView];
-//    }
-//    [self.view addSubview:self.scrollView];
     
     self.leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCROLL_VIEW_H)];
     self.centerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH, SCROLL_VIEW_H)];
@@ -143,13 +128,6 @@
     
     [self.view addSubview:self.pageControl];
 }
-
-//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-//    CGFloat offsetX = scrollView.contentOffset.x;
-//    CGFloat pageWidth = scrollView.frame.size.width;
-//    int currentPage = round(offsetX / pageWidth);
-//    self.pageControl.currentPage = currentPage;
-//}
 
 #pragma mark - Scroll Action
 

@@ -22,6 +22,8 @@
 
 @property(nonatomic, strong) NSArray<UIImage*>* images;
 @property(nonatomic, assign) NSInteger currentIndex;
+
+@property(nonatomic, strong) NSTimer* timer;
 @end
 
 @implementation ImageCarouselViewController
@@ -34,6 +36,37 @@
     [self setupScrollView];
     [self setupPageControl];
     [self updateImageViews];
+    [self startTimer];
+}
+
+#pragma mark - Timer
+- (void)startTimer {
+    if (self.timer && self.timer.isValid) {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+    
+    NSLog(@"定时器Timer已启动...");
+    
+    __weak __typeof(self)weakSelf = self;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:3.0
+                                                 repeats:YES
+                                                   block:^(NSTimer * _Nonnull timer) {
+        [weakSelf scrollToNextPage];
+    }];
+    
+    
+}
+
+- (void)stopTimer {
+    if (self.timer && self.timer.isValid) {
+        NSLog(@"定时器已停止...");
+        [self.timer invalidate];
+        self.timer = nil;
+    } else {
+        NSLog(@"定时器未运行...");
+    }
+    
 }
 
 
@@ -118,18 +151,49 @@
 //    self.pageControl.currentPage = currentPage;
 //}
 
+#pragma mark - Scroll Action
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    CGFloat offsetX = scrollView.contentOffset.x;
-    CGFloat width = scrollView.frame.size.width;
-    
+- (void)updateAndResetViews {
+    CGFloat offsetX = self.scrollView.contentOffset.x;
+    CGFloat width = self.scrollView.frame.size.width;
+
+
     if (offsetX >= 2 * width) {
         self.currentIndex = (self.currentIndex + 1) % self.images.count;
     } else if (offsetX <= 0) {
         self.currentIndex = (self.currentIndex - 1 + self.images.count) % self.images.count;
+    } else {
+        return; // 如果不在边界，不执行任何操作
     }
-    
-    [self updateImageViews];
-    [scrollView setContentOffset:CGPointMake(width, 0)];
+
+    [self updateImageViews]; // 更新图片内容
+    [self.scrollView setContentOffset:CGPointMake(width, 0) animated:NO]; // 瞬间重置回中心
 }
+
+// 在即将开始拖拽时调用
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self stopTimer];
+}
+
+// 在结束拖拽时调用
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [self startTimer];
+}
+
+// 手动滑动时调用
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self updateAndResetViews];
+}
+
+// 代码滑动时调用
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    [self updateAndResetViews];
+}
+
+// 定时器任务
+- (void)scrollToNextPage {
+    CGFloat width = self.scrollView.frame.size.width;
+    [self.scrollView setContentOffset:CGPointMake(width * 2, 0) animated:YES];
+}
+
 @end

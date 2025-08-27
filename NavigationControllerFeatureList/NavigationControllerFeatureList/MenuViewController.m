@@ -28,32 +28,11 @@
     
     self.menuItems = @[@"加法器", @"图片浏览器", @"图片轮播器"];
     
-//    [self addControlSubviews];
-//    [self setupAutoLaytouConstraints];
     [self setupTableView];
 }
 
 #pragma mark - Lazy Load
-- (UIButton*)adderButton {
-    if (_adderButton == nil) {
-        _adderButton = [self createMenuButtonWithTitle:@"加法器" action:@selector(openCalculator)];
-    }
-    return _adderButton;
-}
 
-- (UIButton*)imageBrowserButton {
-    if (_imageBrowserButton == nil) {
-        _imageBrowserButton = [self createMenuButtonWithTitle:@"图片浏览器" action:@selector(openPictureBrowser)];
-    }
-    return _imageBrowserButton;
-}
-
-- (UIButton*)imageCarouselButton {
-    if (_imageCarouselButton == nil) {
-        _imageCarouselButton = [self createMenuButtonWithTitle:@"图片轮播器" action:@selector(openImageCarousel)];
-    }
-    return _imageCarouselButton;
-}
 
 #pragma mark - Setup UI
 - (void)setupTableView {
@@ -91,7 +70,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     switch (indexPath.row) {
-        case 0: {
+        case 0:{
             CalculatorViewController* calculatorVC = [[CalculatorViewController alloc] init];
             [self.navigationController pushViewController:calculatorVC animated:YES];
             break;
@@ -111,35 +90,6 @@
     }
 }
 
-#pragma mark - Add Subviews
-- (void)addControlSubviews {
-    [self.view addSubview:self.adderButton];
-    [self.view addSubview:self.imageBrowserButton];
-    [self.view addSubview:self.imageCarouselButton];
-}
-
-#pragma mark - Auto Layout Constraints
-- (void)setupAutoLaytouConstraints {
-    // Adder Button Constraints
-    [self.adderButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
-    [self.adderButton.bottomAnchor constraintEqualToAnchor:self.view.centerYAnchor constant:-10].active = YES;
-    [self.adderButton.widthAnchor constraintEqualToConstant:220].active = YES;
-    [self.adderButton.heightAnchor constraintEqualToConstant:50].active = YES;
-    
-    // Image Browser Button Constraints
-    [self.imageBrowserButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
-    [self.imageBrowserButton.topAnchor constraintEqualToAnchor:self.adderButton.bottomAnchor constant:20].active = YES;
-    [self.imageBrowserButton.widthAnchor constraintEqualToConstant:220].active = YES;
-    [self.imageBrowserButton.heightAnchor constraintEqualToConstant:50].active = YES;
-    
-    // Image Carousel Button
-    [self.imageCarouselButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
-    [self.imageCarouselButton.topAnchor constraintEqualToAnchor:self.imageBrowserButton.bottomAnchor constant:20].active = YES;
-    [self.imageCarouselButton.widthAnchor constraintEqualToConstant:220].active = YES;
-    [self.imageCarouselButton.heightAnchor constraintEqualToConstant:50].active = YES;
-}
-
-
 #pragma mark - Button Actions
 - (void)openCalculator {
     CalculatorViewController* calculatorVC = [[CalculatorViewController alloc] init];
@@ -156,16 +106,5 @@
     [self.navigationController pushViewController:imageCarouselVC animated:YES];
 }
 
-#pragma mark - Create Menu Method
-- (UIButton*) createMenuButtonWithTitle:(NSString*) title action:(SEL)action {
-    UIButton* button = [UIButton buttonWithType:UIButtonTypeSystem];
-//    button.frame = CGRectMake(0, 0, 220, 50);
-    button.translatesAutoresizingMaskIntoConstraints = NO;
-    [button setTitle:title forState:UIControlStateNormal];
-    [button setBackgroundColor:[UIColor whiteColor]];
-    [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
-    
-    return button;
-}
 
 @end

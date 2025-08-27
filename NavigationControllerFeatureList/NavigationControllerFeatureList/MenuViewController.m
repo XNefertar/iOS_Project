@@ -13,7 +13,8 @@
 @interface MenuViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property(nonatomic, strong) UITableView* tableView;
-@property(nonatomic, strong) NSArray<NSString*>* menuItems;
+@property(nonatomic, strong) NSArray<NSArray<NSString*>*>* menuData;
+@property(nonatomic, strong) NSArray<NSString*>* sectionTitles;
 
 @end
 
@@ -26,7 +27,14 @@
     self.navigationItem.title = @"功能列表";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.menuItems = @[@"加法器", @"图片浏览器", @"图片轮播器"];
+    self.menuData = @[
+        @[@"加法器"],
+        @[@"图片浏览器", @"图片轮播器"]
+    ];
+    
+    self.sectionTitles = @[
+        @"计算工具", @"媒体功能"
+    ];
     
     [self setupTableView];
 }
@@ -52,14 +60,22 @@
 }
 
 #pragma mark - UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return self.menuData.count;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.menuItems.count;
+    return self.menuData[section].count;
+}
+
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return self.sectionTitles[section];
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"MenuItemCell" forIndexPath:indexPath];
-    NSString* title = self.menuItems[indexPath.row];
-    cell.textLabel.text = title;
+    NSString* menuItemText = self.menuData[indexPath.section][indexPath.row];
+    cell.textLabel.text = menuItemText;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
@@ -69,24 +85,43 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    switch (indexPath.row) {
-        case 0:{
-            CalculatorViewController* calculatorVC = [[CalculatorViewController alloc] init];
-            [self.navigationController pushViewController:calculatorVC animated:YES];
+    switch (indexPath.section) {
+        case 0: {
+            switch (indexPath.row) {
+                case 0: {
+                    CalculatorViewController* calculatorVC = [[CalculatorViewController alloc] init];
+                    [self.navigationController pushViewController:calculatorVC animated:YES];
+                    break;
+                }
+                case 1: {
+                    
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+        case 1: {
+            switch (indexPath.row) {
+                case 0: {
+                    PictureBrowserViewController* pictureBrowserVC = [[PictureBrowserViewController alloc] init];
+                    [self.navigationController pushViewController:pictureBrowserVC animated:YES];
+                    break;
+                }
+                case 1: {
+                    ImageCarouselViewController* imageCarouselVC = [[ImageCarouselViewController alloc] init];
+                    [self.navigationController pushViewController:imageCarouselVC animated:YES];
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+        default: {
             break;
         }
-        case 1:{
-            PictureBrowserViewController* pictureBrowserVC = [[PictureBrowserViewController alloc] init];
-            [self.navigationController pushViewController:pictureBrowserVC animated:YES];
-            break;
-        }
-        case 2:{
-            ImageCarouselViewController* imageCarouselVC = [[ImageCarouselViewController alloc] init];
-            [self.navigationController pushViewController:imageCarouselVC animated:YES];
-            break;
-        }
-        default:
-            break;
     }
 }
 

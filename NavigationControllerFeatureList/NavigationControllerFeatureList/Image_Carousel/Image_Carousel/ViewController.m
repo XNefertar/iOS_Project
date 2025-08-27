@@ -29,6 +29,21 @@
 @implementation ImageCarouselViewController
 
 #pragma mark - Life Cycle
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self startTimer];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self stopTimer];
+}
+
+//- (void)dealloc {
+//    NSLog(@"ImageCarouselViewController is being deallocated.");
+//    [self stopTimer];
+//}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -36,7 +51,6 @@
     [self setupScrollView];
     [self setupPageControl];
     [self updateImageViews];
-    [self startTimer];
 }
 
 #pragma mark - Timer

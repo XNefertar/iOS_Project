@@ -6,7 +6,7 @@
 //
 
 #import "MenuViewController.h"
-#import "Calcultor_Adder_Frame/Calcultor_Adder_Frame/ViewController.h"
+#import "Calculator_Adder_Frame/Calculator_Adder_Frame/ViewController.h"
 #import "Picture_Browser/Picture_Browser/ViewController.h"
 #import "Image_Carousel/Image_Carousel/ViewController.h"
 
@@ -89,22 +89,5 @@
             break;
     }
 }
-
-#pragma mark - Button Actions
-- (void)openCalculator {
-    CalculatorViewController* calculatorVC = [[CalculatorViewController alloc] init];
-    [self.navigationController pushViewController:calculatorVC animated:YES];
-}
-
-- (void)openPictureBrowser {
-    PictureBrowserViewController* pictureBrowserVC = [[PictureBrowserViewController alloc] init];
-    [self.navigationController pushViewController:pictureBrowserVC animated:YES];
-}
-
-- (void)openImageCarousel {
-    ImageCarouselViewController* imageCarouselVC = [[ImageCarouselViewController alloc] init];
-    [self.navigationController pushViewController:imageCarouselVC animated:YES];
-}
-
 
 @end

@@ -8,6 +8,12 @@
 #import "Calculator.h"
 #import "ViewController.h"
 
+static const CGFloat topPadding = 120.0;
+static const CGFloat spacing = 12.0;
+static const CGFloat textFieldHeight = 40.0;
+static const CGFloat textFieldWidth = 80.0;
+static const CGFloat operatorLabelWidth = 25.0;
+
 @interface CalculatorViewController ()
 // 计算器类
 @property (nonatomic, strong) Calculator* adder;
@@ -117,12 +123,6 @@
 - (void)setupConstranints {
     UILayoutGuide* safeArea = self.view.safeAreaLayoutGuide;
     
-    CGFloat topPadding = 120.0;
-    CGFloat spacing = 12.0;
-    CGFloat textFieldHeight = 40.0;
-    CGFloat textFieldWidth = 80.0;
-    CGFloat operatorLabelWidth = 25.0;
-    
     // 1. number1Field
     [self.number1Field.leadingAnchor constraintEqualToAnchor:safeArea.leadingAnchor constant:20.0].active = YES;
     [self.number1Field.topAnchor constraintEqualToAnchor:safeArea.topAnchor constant:topPadding].active = YES;
@@ -165,37 +165,5 @@
     NSInteger res = [self.adder addCompute];
     self.resultLabel.text = [NSString stringWithFormat:@"%ld", res];
 }
-
-//#pragma mark - Set Control Frame
-//- (void)setupControlFrame {
-//    // 设置frame
-//    self.number1Field.frame = CGRectMake(self.horizonPadding, self.startY, self.textFieldWidth, self.textFieldHeight);
-//    
-//    // + 标签起始坐标 = 第一个输入框的右边界 + 控件间距
-//    CGFloat plusLabelX = CGRectGetMaxX(self.number1Field.frame) + self.spacing;
-//    self.plusLabel.frame = CGRectMake(plusLabelX, self.startY, self.operatorLabelWidth, self.textFieldHeight);
-//    
-//    CGFloat number2FieldX = CGRectGetMaxX(self.plusLabel.frame) + self.spacing;
-//    self.number2Field.frame = CGRectMake(number2FieldX, self.startY, self.textFieldWidth, self.textFieldHeight);
-//    
-//    CGFloat equalLabelX = CGRectGetMaxX(self.number2Field.frame) + self.spacing;
-//    self.equalLabel.frame = CGRectMake(equalLabelX, self.startY, self.operatorLabelWidth, self.textFieldHeight);
-//    
-//    CGFloat resultLabelX = CGRectGetMaxX(self.equalLabel.frame) + self.spacing;
-//    self.resultLabel.frame = CGRectMake(resultLabelX, self.startY, self.textFieldWidth, self.textFieldHeight);
-//}
-
-//#pragma mark - Set Button Frame
-//- (void)setupButtonFrame {
-//    // 按钮的居中布局
-//    CGFloat buttonWidth = 200.0;
-//    CGFloat buttonHeight = 45.0;
-//    
-//    // 居中的X坐标
-//    // (屏幕宽度 - 按钮宽度) / 2
-//    CGFloat buttonX = (self.view.bounds.size.width - buttonWidth) / 2;
-//    CGFloat buttonY = CGRectGetMaxY(self.number1Field.frame) + 20.0;
-//    self.calculateButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
-//}
 
 @end

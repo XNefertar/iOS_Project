@@ -10,7 +10,7 @@
 
 @interface PictureBrowserViewController ()
 
-@property(nonatomic, strong) NSArray* pictureModels;
+@property(nonatomic, strong) NSArray<PictureModel*>* pictureModels;
 @property(nonatomic, strong) UILabel* descriptionField;
 @property(nonatomic, assign) NSInteger currentIndex;
 @property(nonatomic, strong) UIImageView* imageView;
@@ -74,8 +74,8 @@
     self.currentIndex = 0;
     [self updatePictureModel];
     
-    UIImage* preivousIcon = [UIImage imageNamed:@"left_highlighted"];
-    [self.previousButton setImage:preivousIcon forState:UIControlStateNormal];
+    UIImage* previousIcon = [UIImage imageNamed:@"left_highlighted"];
+    [self.previousButton setImage:previousIcon forState:UIControlStateNormal];
     [self.previousButton addTarget:self action:@selector(switchPreviousPicture) forControlEvents:UIControlEventTouchUpInside];
     
     UIImage* nextIcon = [UIImage imageNamed:@"right_highlighted"];
@@ -106,13 +106,7 @@
     
     [self.imageView.heightAnchor constraintLessThanOrEqualToAnchor:self.imageView.widthAnchor].active = YES;
     [self.imageView.heightAnchor constraintLessThanOrEqualToAnchor:safeArea.heightAnchor multiplier:0.65].active = YES;
-    
-//    [self.descriptionField.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
-//    [self.descriptionField.topAnchor constraintEqualToAnchor:self.imageView.bottomAnchor constant:20.0].active = YES;
-//    [self.descriptionField.topAnchor constraintGreaterThanOrEqualToAnchor:self.imageView.bottomAnchor constant:20.0].active = YES;
-//    [self.descriptionField.bottomAnchor constraintEqualToAnchor:self.previousButton.topAnchor constant:-30.0].active = YES;
-//    [self.descriptionField.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
-    
+
     UILayoutGuide* verticalSpaceGuide = [[UILayoutGuide alloc] init];
     [self.view addLayoutGuide:verticalSpaceGuide];
     
@@ -140,7 +134,6 @@
     
 }
 
-
 #pragma mark - Load Picture Models Data
 - (void)loadData {
     self.pictureModels = @[
@@ -155,12 +148,13 @@
 #pragma mark - Update State
 - (void)updateVisibility {
     self.previousButton.hidden = (self.currentIndex == 0 ? YES : NO);
-    self.nextButton.hidden = (self.currentIndex == 4 ? YES : NO);
+    self.nextButton.hidden = (self.currentIndex == self.pictureModels.count - 1 ? YES : NO);
 }
 
 - (void)updatePictureModel {
-    self.imageView.image = ((PictureModel*)self.pictureModels[self.currentIndex]).image;
-    self.descriptionField.text = ((PictureModel*)self.pictureModels[self.currentIndex]).descriptionText;
+    PictureModel* pictureModel = self.pictureModels[self.currentIndex];
+    self.imageView.image = pictureModel.image;
+    self.descriptionField.text = pictureModel.descriptionText;
 }
 
 #pragma mark - Switch Picture

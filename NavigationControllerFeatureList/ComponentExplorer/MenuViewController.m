@@ -9,6 +9,7 @@
 #import "Calculator_Adder_Frame/Calculator_Adder_Frame/ViewController.h"
 #import "Picture_Browser/Picture_Browser/ViewController.h"
 #import "Image_Carousel/Image_Carousel/ViewController.h"
+#import "Guessing_Pictures_Game/Guessing_Pictures_Game/GuessingGameViewController.h"
 
 @interface MenuViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -123,7 +124,8 @@
         case 2: {
             switch (indexPath.row) {
                 case 0: {
-                    
+                    GuessingGameViewController* guessingGameVC = [[GuessingGameViewController alloc] init];
+                    [self.navigationController pushViewController:guessingGameVC animated:YES];
                     break;
                 }
                 case 1: {

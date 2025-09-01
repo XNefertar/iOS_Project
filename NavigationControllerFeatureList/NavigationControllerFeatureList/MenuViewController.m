@@ -29,11 +29,12 @@
     
     self.menuData = @[
         @[@"加法器"],
-        @[@"图片浏览器", @"图片轮播器"]
+        @[@"图片浏览器", @"图片轮播器"],
+        @[@"超级猜图"]
     ];
     
     self.sectionTitles = @[
-        @"计算工具", @"媒体功能"
+        @"计算工具", @"媒体功能", @"游戏"
     ];
     
     [self setupTableView];
@@ -117,6 +118,20 @@
                 default: {
                     break;
                 }
+            }
+        }
+        case 2: {
+            switch (indexPath.row) {
+                case 0: {
+                    
+                    break;
+                }
+                case 1: {
+                    
+                    break;
+                }
+                default:
+                    break;
             }
         }
         default: {

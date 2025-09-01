@@ -7,26 +7,26 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		2B90BB6B2E5462A60024DE95 /* NavigationControllerFeatureList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NavigationControllerFeatureList.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B90BB6B2E5462A60024DE95 /* ComponentExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComponentExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		2B90BB822E5462A70024DE95 /* Exceptions for "NavigationControllerFeatureList" folder in "NavigationControllerFeatureList" target */ = {
+		2B90BB822E5462A70024DE95 /* Exceptions for "ComponentExplorer" folder in "ComponentExplorer" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 2B90BB6A2E5462A60024DE95 /* NavigationControllerFeatureList */;
+			target = 2B90BB6A2E5462A60024DE95 /* ComponentExplorer */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		2B90BB6D2E5462A60024DE95 /* NavigationControllerFeatureList */ = {
+		2B90BB6D2E5462A60024DE95 /* ComponentExplorer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				2B90BB822E5462A70024DE95 /* Exceptions for "NavigationControllerFeatureList" folder in "NavigationControllerFeatureList" target */,
+				2B90BB822E5462A70024DE95 /* Exceptions for "ComponentExplorer" folder in "ComponentExplorer" target */,
 			);
-			path = NavigationControllerFeatureList;
+			path = ComponentExplorer;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -45,7 +45,7 @@
 		2B90BB622E5462A60024DE95 = {
 			isa = PBXGroup;
 			children = (
-				2B90BB6D2E5462A60024DE95 /* NavigationControllerFeatureList */,
+				2B90BB6D2E5462A60024DE95 /* ComponentExplorer */,
 				2B90BB6C2E5462A60024DE95 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,7 +53,7 @@
 		2B90BB6C2E5462A60024DE95 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2B90BB6B2E5462A60024DE95 /* NavigationControllerFeatureList.app */,
+				2B90BB6B2E5462A60024DE95 /* ComponentExplorer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,9 +61,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2B90BB6A2E5462A60024DE95 /* NavigationControllerFeatureList */ = {
+		2B90BB6A2E5462A60024DE95 /* ComponentExplorer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2B90BB832E5462A70024DE95 /* Build configuration list for PBXNativeTarget "NavigationControllerFeatureList" */;
+			buildConfigurationList = 2B90BB832E5462A70024DE95 /* Build configuration list for PBXNativeTarget "ComponentExplorer" */;
 			buildPhases = (
 				2B90BB672E5462A60024DE95 /* Sources */,
 				2B90BB682E5462A60024DE95 /* Frameworks */,
@@ -74,13 +74,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				2B90BB6D2E5462A60024DE95 /* NavigationControllerFeatureList */,
+				2B90BB6D2E5462A60024DE95 /* ComponentExplorer */,
 			);
-			name = NavigationControllerFeatureList;
+			name = ComponentExplorer;
 			packageProductDependencies = (
 			);
 			productName = NavigationControllerFeatureList;
-			productReference = 2B90BB6B2E5462A60024DE95 /* NavigationControllerFeatureList.app */;
+			productReference = 2B90BB6B2E5462A60024DE95 /* ComponentExplorer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -97,7 +97,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2B90BB662E5462A60024DE95 /* Build configuration list for PBXProject "NavigationControllerFeatureList" */;
+			buildConfigurationList = 2B90BB662E5462A60024DE95 /* Build configuration list for PBXProject "ComponentExplorer" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -111,7 +111,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2B90BB6A2E5462A60024DE95 /* NavigationControllerFeatureList */,
+				2B90BB6A2E5462A60024DE95 /* ComponentExplorer */,
 			);
 		};
 /* End PBXProject section */
@@ -145,7 +145,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = NavigationControllerFeatureList/Info.plist;
+				INFOPLIST_FILE = ComponentExplorer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -156,7 +156,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = sss.NavigationControllerFeatureList;
+				PRODUCT_BUNDLE_IDENTIFIER = sss.ComponentExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -171,7 +171,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = NavigationControllerFeatureList/Info.plist;
+				INFOPLIST_FILE = ComponentExplorer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -182,7 +182,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = sss.NavigationControllerFeatureList;
+				PRODUCT_BUNDLE_IDENTIFIER = sss.ComponentExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -308,7 +308,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2B90BB662E5462A60024DE95 /* Build configuration list for PBXProject "NavigationControllerFeatureList" */ = {
+		2B90BB662E5462A60024DE95 /* Build configuration list for PBXProject "ComponentExplorer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B90BB862E5462A70024DE95 /* Debug */,
@@ -317,7 +317,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2B90BB832E5462A70024DE95 /* Build configuration list for PBXNativeTarget "NavigationControllerFeatureList" */ = {
+		2B90BB832E5462A70024DE95 /* Build configuration list for PBXNativeTarget "ComponentExplorer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B90BB842E5462A70024DE95 /* Debug */,
